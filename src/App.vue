@@ -1,12 +1,75 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div :class="mode">
+    <NavBar :navbarMode="mode" :bgMode="mode" />
+    <Search :mode="mode" @search="searchTweet($event)" />
+    <Table :mode="mode" :search="inputSearch" />
+    <router-view />
   </div>
-  <router-view />
 </template>
 
+<script lang="ts">
+import NavBar from "@/components/NavBar.vue"; // @ is an alias to /src
+import Search from "@/components/Search.vue"; // @ is an alias to /src
+import Table from "@/components/Table.vue"; // @ is an alias to /src
+
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  data() {
+    return {
+      mode: "dark",
+      inputSearch: ""
+    };
+  },
+  methods: {
+    keyPress(event: any) {
+      if (event.key === "m" && event.ctrlKey === true) {
+        this.changeMode();
+      }
+    },
+    changeMode() {
+      if (this.mode === "dark") {
+        this.mode = "light";
+      } else {
+        this.mode = "dark";
+      }
+    },
+    searchTweet(inputSearch: string) {
+      this.inputSearch = inputSearch;
+    }
+  },
+  watch: {
+    mode(value: any) {
+      if (value == "dark") {
+        document.body.classList.add("dark");
+      } else {
+        document.body.classList.remove("dark");
+      }
+    }
+  },
+  components: {
+    NavBar,
+    Search,
+    Table
+  },
+  mounted() {
+    window.addEventListener("keyup", this.keyPress);
+  }
+});
+</script>
+
+
 <style lang="scss">
+@import "./fonts/style.css";
+
+$colorDark: #22252a;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -15,16 +78,8 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.dark {
+  background: $colorDark !important;
+  color: white !important;
 }
 </style>
