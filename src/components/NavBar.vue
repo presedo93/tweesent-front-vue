@@ -4,14 +4,9 @@
       <a class="navbar-brand mx-auto" href="#"
         ><span class="icon-logoCompleto"></span
       ></a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".dual-collapse2"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    </div>
+    <div class="mode" @click="changemode">
+      <i :class="modeIcon"></i>
     </div>
   </nav>
 </template>
@@ -26,10 +21,22 @@ export default defineComponent({
     };
   },
   props: ["navbarMode", "bgMode"],
-  methods: {},
+  methods: {
+    changemode() {
+      this.$emit("changemode");
+    }
+  },
   computed: {
     modeClass(): string {
       return "navbar-" + this.navbarMode + " bg-" + this.bgMode;
+    },
+    modeIcon(): string {
+      if(this.navbarMode === "dark"){
+        return "far fa-moon";
+      }
+      else{
+        return "far fa-sun";
+      }
     }
   }
 });
@@ -39,5 +46,12 @@ export default defineComponent({
 <style scoped lang="scss">
 .icon-logoCompleto {
   font-size: 40px;
+}
+.mode{
+    margin-right: 50px;
+}
+
+.far:hover{
+  font-weight: 900;
 }
 </style>

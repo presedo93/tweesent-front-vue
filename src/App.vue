@@ -1,6 +1,6 @@
 <template>
   <div :class="mode">
-    <NavBar :navbarMode="mode" :bgMode="mode" />
+    <NavBar :navbarMode="mode" :bgMode="mode" @changemode="changeMode" />
     <Search :mode="mode" @search="searchTweet($event)" />
     <Table :mode="mode" :search="inputSearch" />
     <router-view />
@@ -54,6 +54,7 @@ export default defineComponent({
   },
   mounted() {
     window.addEventListener("keyup", this.keyPress);
+    document.body.classList.add("dark");
   }
 });
 </script>
@@ -61,8 +62,7 @@ export default defineComponent({
 
 <style lang="scss">
 @import "./fonts/style.css";
-
-$colorDark: #22252a;
+@import "./styles/variables.scss";
 
 * {
   margin: 0;

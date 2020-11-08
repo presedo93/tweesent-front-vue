@@ -1,5 +1,5 @@
 <template>
-  <div class="row" style="margin-top: 100px;">
+  <div class="row" style="margin-top: 100px; width: 100%">
     <div class="col-3"></div>
     <div class="col-6">
       <table :class="modeClass">
