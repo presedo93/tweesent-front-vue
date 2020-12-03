@@ -2,7 +2,11 @@
   <div :class="mode">
     <NavBar :navbarMode="mode" :bgMode="mode" @changemode="changeMode" />
     <Search :mode="mode" @search="searchTweet($event)" />
-    <Table :mode="mode" :search="inputSearch" />
+    <div class="row">
+      <div class="col-4"><CardContainer :mode="mode" :type="'Negative'" /></div>
+      <div class="col-4"><CardContainer :mode="mode" :type="'Neutral'" /></div>
+      <div class="col-4"><CardContainer :mode="mode" :type="'Positive'" /></div>
+    </div>
     <router-view />
   </div>
 </template>
@@ -11,6 +15,7 @@
 import NavBar from "@/components/NavBar.vue"; // @ is an alias to /src
 import Search from "@/components/Search.vue"; // @ is an alias to /src
 import Table from "@/components/Table.vue"; // @ is an alias to /src
+import CardContainer from "@/components/CardContainer.vue"; // @ is an alias to /src
 
 import { defineComponent } from "vue";
 
@@ -18,7 +23,7 @@ export default defineComponent({
   data() {
     return {
       mode: "dark",
-      inputSearch: ""
+      inputSearch: "",
     };
   },
   methods: {
@@ -36,7 +41,7 @@ export default defineComponent({
     },
     searchTweet(inputSearch: string) {
       this.inputSearch = inputSearch;
-    }
+    },
   },
   watch: {
     mode(value: any) {
@@ -45,17 +50,17 @@ export default defineComponent({
       } else {
         document.body.classList.remove("dark");
       }
-    }
+    },
   },
   components: {
     NavBar,
     Search,
-    Table
+    CardContainer,
   },
   mounted() {
     window.addEventListener("keyup", this.keyPress);
     document.body.classList.add("dark");
-  }
+  },
 });
 </script>
 
