@@ -47,11 +47,16 @@ export default defineComponent({
 .icon-logoCompleto {
   font-size: 40px;
 }
+
 .mode{
     margin-right: 50px;
 }
 
 .far:hover{
   font-weight: 900;
+}
+
+.bg-light {
+  background-color: #a7a8aa !important;
 }
 </style>

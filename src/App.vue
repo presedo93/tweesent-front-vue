@@ -87,4 +87,8 @@ export default defineComponent({
   background: $colorDark !important;
   color: white !important;
 }
+
+.light {
+  background-color: #cbccd1;
+}
 </style>
