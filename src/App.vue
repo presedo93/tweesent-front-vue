@@ -1,7 +1,14 @@
 <template>
   <div :class="mode">
     <NavBar :navbarMode="mode" :bgMode="mode" @changemode="changeMode" />
-    <Search :mode="mode" @search="searchTweet($event)" />
+    <Search :mode="mode" @search="searched" />
+    <div class="row">
+      <ul>
+        <li v-for="tweet in tweetsUrl" :key="tweet">
+          <tweet :url="tweet" />
+        </li>
+      </ul>
+    </div>
     <div class="row">
       <div class="col-4"><CardContainer :mode="mode" :type="'Negative'" /></div>
       <div class="col-4"><CardContainer :mode="mode" :type="'Neutral'" /></div>
@@ -14,16 +21,23 @@
 <script lang="ts">
 import NavBar from "@/components/NavBar.vue"; // @ is an alias to /src
 import Search from "@/components/Search.vue"; // @ is an alias to /src
-import Table from "@/components/Table.vue"; // @ is an alias to /src
 import CardContainer from "@/components/CardContainer.vue"; // @ is an alias to /src
+import Tweet from "@/components/Tweet.vue";
 
 import { defineComponent } from "vue";
+
+interface TweetData {
+  id : number,
+  name: string,
+  text: string,
+}
 
 export default defineComponent({
   data() {
     return {
       mode: "dark",
       inputSearch: "",
+      tweetsUrl: [] as string[],
     };
   },
   methods: {
@@ -39,8 +53,15 @@ export default defineComponent({
         this.mode = "dark";
       }
     },
-    searchTweet(inputSearch: string) {
-      this.inputSearch = inputSearch;
+    searched(tweets: Array<TweetData>) {
+      console.log("input tweets:", tweets.length);
+      for (let i = 0; i < tweets.length; i++)
+      {
+        const tw = tweets[i];
+        console.log(tw);
+        this.tweetsUrl.push("https://twitter.com/" + tw.name + "/status/" + tw.id);
+      }
+      console.log(this.tweetsUrl);
     },
   },
   watch: {
@@ -56,6 +77,7 @@ export default defineComponent({
     NavBar,
     Search,
     CardContainer,
+    Tweet,
   },
   mounted() {
     window.addEventListener("keyup", this.keyPress);

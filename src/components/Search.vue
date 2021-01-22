@@ -11,11 +11,18 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import axios from "axios";
+
+interface TweetData {
+  id : number,
+  name: string,
+  text: string,
+}
 
 export default defineComponent({
   data() {
     return {
-      modeOn: "O"
+      modeOn: "O",
     };
   },
   props: ["mode"],
@@ -24,9 +31,23 @@ export default defineComponent({
       event.target.previousElementSibling.value = "";
     },
     search(event: any) {
-      this.$emit("search", event.target.value);
-    }
-  }
+      const path = "http://0.0.0.0:5000/gettweet";
+      const tweets : TweetData[] = [];
+
+      axios
+        .post(path, { text: event.target.value })
+        .then((answer) => {
+          for (let i = 0; i < answer.data.tweets.length; i++)
+          {
+            tweets.push(answer.data.tweets[i]);
+          }
+        })
+        .catch((error) => {
+          console.log("ERROR::", error.response.data);
+        });
+      this.$emit("search", tweets);
+    },
+  },
 });
 </script>
 
