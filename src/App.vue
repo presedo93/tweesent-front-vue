@@ -27,7 +27,7 @@ import Tweet from "@/components/Tweet.vue";
 import { defineComponent } from "vue";
 
 interface TweetData {
-  id : number,
+  id : string,
   name: string,
   text: string,
 }
@@ -54,7 +54,6 @@ export default defineComponent({
       }
     },
     searched(tweets: Array<TweetData>) {
-      console.log("input tweets:", tweets.length);
       for (let i = 0; i < tweets.length; i++)
       {
         const tw = tweets[i];
