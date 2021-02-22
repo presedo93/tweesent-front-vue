@@ -5,6 +5,7 @@
     <div class="row">
       <ul>
         <li v-for="tweet in tweetsUrl" :key="tweet">
+          <p>{{tweet}}</p>
           <tweet :url="tweet" />
         </li>
       </ul>
@@ -57,10 +58,8 @@ export default defineComponent({
       for (let i = 0; i < tweets.length; i++)
       {
         const tw = tweets[i];
-        console.log(tw);
         this.tweetsUrl.push("https://twitter.com/" + tw.name + "/status/" + tw.id);
       }
-      console.log(this.tweetsUrl);
     },
   },
   watch: {

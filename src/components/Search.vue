@@ -13,7 +13,7 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 
-interface TweetData {
+export interface TweetData {
   id : string,
   name: string,
   text: string,
@@ -39,8 +39,12 @@ export default defineComponent({
         .then((answer) => {
           for (let i = 0; i < answer.data.tweets.length; i++)
           {
-            tweets.push(answer.data.tweets[i]);
+            tweets.push({
+              id : answer.data.tweets[i].id,
+              name : answer.data.tweets[i].name,
+              text : answer.data.tweets[i].text});
           }
+          this.$emit("search", tweets);
         })
         .catch((error) => {
           console.log("ERROR::", error.response.data);
