@@ -14,9 +14,9 @@ import { defineComponent } from "vue";
 import axios from "axios";
 
 export interface TweetData {
-  id : string,
-  name: string,
-  text: string,
+  id: string;
+  name: string;
+  text: string;
 }
 
 export default defineComponent({
@@ -31,25 +31,24 @@ export default defineComponent({
       event.target.previousElementSibling.value = "";
     },
     search(event: any) {
-      const path = "http://0.0.0.0:5000/gettweet";
-      const tweets : TweetData[] = [{id: "1361094185412100096", name: "elonmusk", text: "Hello"}];
+      const path = "http://127.0.0.1:5000/gettweet";
+      const tweets: TweetData[] = [];
 
-      /*axios
+      axios
         .post(path, { text: event.target.value })
         .then((answer) => {
-          for (let i = 0; i < answer.data.tweets.length; i++)
-          {
+          for (let i = 0; i < answer.data.tweets.length; i++) {
             tweets.push({
-              id : answer.data.tweets[i].id,
-              name : answer.data.tweets[i].name,
-              text : answer.data.tweets[i].text});
+              id: answer.data.tweets[i].id,
+              name: answer.data.tweets[i].name,
+              text: answer.data.tweets[i].text,
+            });
           }
           this.$emit("search", tweets);
         })
         .catch((error) => {
-          console.log("ERROR::", error.response.data);
-        });*/
-      this.$emit("search", tweets);
+          console.log("ERROR::", error);
+        });
     },
   },
 });

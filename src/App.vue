@@ -5,7 +5,6 @@
     <div class="row">
       <ul>
         <li v-for="tweet in tweetsUrl" :key="tweet">
-          <p>{{tweet}}</p>
           <tweet :url="tweet" />
         </li>
       </ul>
