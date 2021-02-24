@@ -11,11 +11,18 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import axios from "axios";
+
+export interface TweetData {
+  id: string;
+  name: string;
+  text: string;
+}
 
 export default defineComponent({
   data() {
     return {
-      modeOn: "O"
+      modeOn: "O",
     };
   },
   props: ["mode"],
@@ -24,9 +31,26 @@ export default defineComponent({
       event.target.previousElementSibling.value = "";
     },
     search(event: any) {
-      this.$emit("search", event.target.value);
-    }
-  }
+      const path = "http://127.0.0.1:5000/gettweet";
+      const tweets: TweetData[] = [];
+
+      axios
+        .post(path, { text: event.target.value })
+        .then((answer) => {
+          for (let i = 0; i < answer.data.tweets.length; i++) {
+            tweets.push({
+              id: answer.data.tweets[i].id,
+              name: answer.data.tweets[i].name,
+              text: answer.data.tweets[i].text,
+            });
+          }
+          this.$emit("search", tweets);
+        })
+        .catch((error) => {
+          console.log("ERROR::", error);
+        });
+    },
+  },
 });
 </script>
 
@@ -35,12 +59,17 @@ export default defineComponent({
 @import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700");
 
 .search-box {
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .dark {
   border-color: white !important;
 }
+
+.light {
+  border-color: #7a7a7a !important;
+}
+
 html,
 body {
   width: 100%;
@@ -56,14 +85,14 @@ body {
 }
 
 .search-box {
-  border: solid 5px black;
+  border: solid 2px black;
   display: inline-block;
   position: relative;
   border-radius: 50px;
   input[type="text"] {
     font-family: Raleway, sans-serif;
     font-size: 20px;
-    font-weight: bold;
+    color: #7a7a7a;
     width: 50px;
     height: 50px;
     padding: 5px 40px 5px 10px;
@@ -106,7 +135,7 @@ body {
     &:after {
       content: "";
       height: 25px;
-      border-left: solid 5px black;
+      border-left: solid 2px #7a7a7a;
       position: absolute;
       transform: rotate(-45deg);
     }
@@ -115,10 +144,12 @@ body {
     }
     &.dark:before,
     &.dark:after {
-      border-left: solid 5px white;
+      border-left: solid 2px white;
+      border-color: white !important;
     }
     &:after {
       transform: rotate(45deg);
+      border-color: #7a7a7a !important;
       opacity: 0;
       top: -20px;
       right: -10px;
