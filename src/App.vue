@@ -3,11 +3,15 @@
     <NavBar :navbarMode="mode" :bgMode="mode" @changemode="changeMode" />
     <Search :mode="mode" @search="searched" />
     <div class="row">
+      <div class="col-4"></div>
+      <div class="col-4">
       <ul>
         <li v-for="tweet in tweetsUrl" :key="tweet">
           <tweet :url="tweet" />
         </li>
       </ul>
+      </div>
+      <div class="col-4"></div>
     </div>
     <div class="row">
       <div class="col-4"><CardContainer :mode="mode" :type="'Negative'" /></div>
@@ -110,4 +114,23 @@ export default defineComponent({
 .light {
   background-color: #cbccd1;
 }
+
+ul {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  padding-left: 0px !important; 
+}
+li {
+  margin: 0;
+  padding: 0;
+  height: 200px;
+  margin-bottom: -150px;
+  clear: both;
+}
+li:last-child {
+  margin-bottom: 0;
+}
+
 </style>
