@@ -126,6 +126,7 @@ li {
   margin: 0;
   padding: 0;
   height: 200px;
+  width: 400px;
   margin-bottom: -150px;
   clear: both;
 }

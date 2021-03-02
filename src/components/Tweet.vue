@@ -1,7 +1,7 @@
 <template>
   <div>
-    <blockquote class="twitter-tweet">
-      <a :href="tweet" />
+    <blockquote class="twitter-tweet" data-height="300px" data-conversation="none" data-cards="hidden" data-theme="dark">
+      <a :href="tweet"/>
     </blockquote>
   </div>
 </template>
