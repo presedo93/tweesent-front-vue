@@ -2,6 +2,7 @@
   <div :class="mode">
     <NavBar :navbarMode="mode" :bgMode="mode" @changemode="changeMode" />
     <Search :mode="mode" @search="searched" />
+    <stats />
     <div class="row">
       <ul>
         <li v-for="tweet in tweetsUrl" :key="tweet">
@@ -23,6 +24,7 @@ import NavBar from "@/components/NavBar.vue"; // @ is an alias to /src
 import Search from "@/components/Search.vue"; // @ is an alias to /src
 import CardContainer from "@/components/CardContainer.vue"; // @ is an alias to /src
 import Tweet from "@/components/Tweet.vue";
+import Stats from "@/components/Stats.vue";
 
 import { defineComponent } from "vue";
 
@@ -75,6 +77,7 @@ export default defineComponent({
     Search,
     CardContainer,
     Tweet,
+    Stats
   },
   mounted() {
     window.addEventListener("keyup", this.keyPress);
