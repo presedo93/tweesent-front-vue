@@ -133,7 +133,7 @@ li {
 li:last-child {
   margin-bottom: 0;
 }
-
+/*
 li:last-child .animation {
   position: relative;
   animation: kfpositive 5s both 5s;
@@ -142,5 +142,5 @@ li:last-child .animation {
   0%   {left:0px; top:0px;}
   50%  {left:110%; top:0px; opacity: 0.5;}
   100% {left:110%; top:150%; opacity: 0;}
-}
+}*/
 </style>
