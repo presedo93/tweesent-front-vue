@@ -2,11 +2,11 @@
   <div :class="mode">
     <NavBar :navbarMode="mode" :bgMode="mode" @changemode="changeMode" />
     <Search :mode="mode" @search="searched" />
-    <stats />
+    <stats :negative="80.2" :neutral="9.8" :positive="10.0"/>
     <div class="row">
       <ul>
-        <li v-for="tweet in tweetsUrl" :key="tweet">
-          <tweet :url="tweet" />
+        <li v-for="tw in tweets" :key="tw">
+          <tweet :tweet="tw" />
         </li>
       </ul>
     </div>
@@ -23,23 +23,17 @@
 import NavBar from "@/components/NavBar.vue"; // @ is an alias to /src
 import Search from "@/components/Search.vue"; // @ is an alias to /src
 import CardContainer from "@/components/CardContainer.vue"; // @ is an alias to /src
-import Tweet from "@/components/Tweet.vue";
+import Tweet, { TweetData } from "@/components/Tweet.vue";
 import Stats from "@/components/Stats.vue";
 
 import { defineComponent } from "vue";
-
-interface TweetData {
-  id : string,
-  name: string,
-  text: string,
-}
 
 export default defineComponent({
   data() {
     return {
       mode: "dark",
       inputSearch: "",
-      tweetsUrl: [] as string[],
+      tweets: [] as TweetData[],
     };
   },
   methods: {
@@ -55,12 +49,8 @@ export default defineComponent({
         this.mode = "dark";
       }
     },
-    searched(tweets: Array<TweetData>) {
-      for (let i = 0; i < tweets.length; i++)
-      {
-        const tw = tweets[i];
-        this.tweetsUrl.push("https://twitter.com/" + tw.name + "/status/" + tw.id);
-      }
+    searched(tweets: TweetData[]) {
+      this.tweets = tweets;
     },
   },
   watch: {

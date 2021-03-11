@@ -5,15 +5,15 @@
     <br />
     <div class="row">
       <div class="col-md-4">
-        <p class="numbers negatives">82.7%</p>
+        <p class="numbers negatives">{{ negative }}%</p>
         <p class="letters negatives">Negatives</p>
       </div>
       <div class="col-md-4">
-        <p class="numbers">0.7%</p>
+        <p class="numbers">{{ neutral }}%</p>
         <p class="letters">Neutral</p>
       </div>
       <div class="col-md-4">
-        <p class="numbers positives">16.6%</p>
+        <p class="numbers positives">{{ positive }}%</p>
         <p class="letters positives">Positives</p>
       </div>
     </div>
@@ -21,11 +21,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
-  setup() {
-    return {};
+  props: {
+    positive: {
+      type: Number,
+      required: true
+    },
+    neutral: {
+      type: Number,
+      required: true
+    },
+    negative: {
+      type: Number,
+      required: true
+    }
+  },
+  setup(props) {
+    const pos = ref<number>(props.positive);
+    const neu = ref<number>(props.neutral);
+    const neg = ref<number>(props.negative);
+
+    return { pos, neu, neg };
   },
 });
 </script>

@@ -1,20 +1,31 @@
 <template>
   <div>
     <blockquote class="twitter-tweet">
-      <a :href="tweet" />
+      <a :href="url" />
     </blockquote>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, PropType } from "vue";
+
+export interface TweetData {
+  id: string;
+  name: string;
+  text: string;
+  sentiment: string;
+  confidence: string
+}
 
 export default defineComponent({
   props: {
-    url: String
+    tweet: {
+      type : Object as PropType<TweetData>,
+      required : true
+    },
   },
   setup(props) {
-    const tweet = ref<string | undefined>(props.url);
+    const url = ref<string>("https://twitter.com/" + props.tweet.name + "/status/" + props.tweet.id);
 
     onMounted(() => {
       const plugin = document.createElement("script");
@@ -26,7 +37,7 @@ export default defineComponent({
       document.head.appendChild(plugin);
     })
 
-    return { tweet };
+    return { url };
   },
 });
 </script>

@@ -12,12 +12,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
-
-export interface TweetData {
-  id: string;
-  name: string;
-  text: string;
-}
+import { TweetData } from "@/components/Tweet.vue";
 
 export default defineComponent({
   data() {
@@ -31,7 +26,7 @@ export default defineComponent({
       event.target.previousElementSibling.value = "";
     },
     search(event: any) {
-      const path = "http://127.0.0.1:5000/gettweet";
+      const path = "http://127.0.0.1:5000/gettweet?count=10";
       const tweets: TweetData[] = [];
 
       axios
@@ -42,6 +37,8 @@ export default defineComponent({
               id: answer.data.tweets[i].id,
               name: answer.data.tweets[i].name,
               text: answer.data.tweets[i].text,
+              sentiment: answer.data.tweets[i].sentiment,
+              confidence: answer.data.tweets[i].confidence
             });
           }
           this.$emit("search", tweets);
