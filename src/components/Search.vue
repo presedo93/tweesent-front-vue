@@ -12,12 +12,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
-
-export interface TweetData {
-  id: string;
-  name: string;
-  text: string;
-}
+import { TweetData } from "@/components/Tweet.vue";
+import { Scores } from "@/components/Stats.vue";
 
 export default defineComponent({
   data() {
@@ -31,20 +27,32 @@ export default defineComponent({
       event.target.previousElementSibling.value = "";
     },
     search(event: any) {
-      const path = "http://127.0.0.1:5000/gettweet";
+      const path = "http://127.0.0.1:5000/gettweet?count=10";
       const tweets: TweetData[] = [];
+      const score: Scores = new Scores();
 
       axios
         .post(path, { text: event.target.value })
         .then((answer) => {
+          const len = answer.data.tweets.length;
           for (let i = 0; i < answer.data.tweets.length; i++) {
             tweets.push({
               id: answer.data.tweets[i].id,
               name: answer.data.tweets[i].name,
               text: answer.data.tweets[i].text,
+              sentiment: answer.data.tweets[i].sentiment,
+              confidence: answer.data.tweets[i].confidence
             });
+            if (answer.data.tweets[i].sentiment === "negative") {
+              score.negatives += 1;
+            } else if (answer.data.tweets[i].sentiment === "neutral") {
+              score.neutrals += 1;
+            } else {
+              score.positives += 1;
+            }
           }
-          this.$emit("search", tweets);
+          score.perc(len);
+          this.$emit("search", tweets, score);
         })
         .catch((error) => {
           console.log("ERROR::", error);

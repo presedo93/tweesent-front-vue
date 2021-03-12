@@ -2,12 +2,13 @@
   <div :class="mode">
     <NavBar :navbarMode="mode" :bgMode="mode" @changemode="changeMode" />
     <Search :mode="mode" @search="searched" />
+    <stats v-if="showStats" :scores="scores" />
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
       <ul>
-        <li v-for="tweet in tweetsUrl" :key="tweet">
-          <tweet class="animation" :url="tweet" />
+        <li v-for="tw in tweets" :key="tw">
+          <tweet class="animation" :tweet="tw" />
         </li>
       </ul>
       </div>
@@ -26,22 +27,19 @@
 import NavBar from "@/components/NavBar.vue"; // @ is an alias to /src
 import Search from "@/components/Search.vue"; // @ is an alias to /src
 import CardContainer from "@/components/CardContainer.vue"; // @ is an alias to /src
-import Tweet from "@/components/Tweet.vue";
+import Tweet, { TweetData } from "@/components/Tweet.vue";
+import Stats, { Scores } from "@/components/Stats.vue";
 
 import { defineComponent } from "vue";
-
-interface TweetData {
-  id : string,
-  name: string,
-  text: string,
-}
 
 export default defineComponent({
   data() {
     return {
       mode: "dark",
       inputSearch: "",
-      tweetsUrl: [] as string[],
+      showStats: false as boolean,
+      tweets: [] as TweetData[],
+      scores: new Scores() as Scores
     };
   },
   methods: {
@@ -57,12 +55,10 @@ export default defineComponent({
         this.mode = "dark";
       }
     },
-    searched(tweets: Array<TweetData>) {
-      for (let i = 0; i < tweets.length; i++)
-      {
-        const tw = tweets[i];
-        this.tweetsUrl.push("https://twitter.com/" + tw.name + "/status/" + tw.id);
-      }
+    searched(tweets: TweetData[], scores: Scores) {
+      this.tweets = tweets;
+      this.scores = scores;
+      this.showStats = true;
     },
   },
   watch: {
@@ -79,6 +75,7 @@ export default defineComponent({
     Search,
     CardContainer,
     Tweet,
+    Stats
   },
   mounted() {
     window.addEventListener("keyup", this.keyPress);

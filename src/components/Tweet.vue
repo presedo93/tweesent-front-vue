@@ -5,7 +5,7 @@
     :css="false">
     <div>
     <blockquote class="twitter-tweet" data-height="300px" data-conversation="none" data-cards="hidden" data-theme="dark">
-      <a :href="tweet"/>
+      <a :href="url"/>
     </blockquote>
     </div>
     </transition>
@@ -13,16 +13,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, PropType } from "vue";
 import gsap from "gsap";
+
+export interface TweetData {
+  id: string;
+  name: string;
+  text: string;
+  sentiment: string;
+  confidence: string
+}
 
 export default defineComponent({
   props: {
-    url: String
+    tweet: {
+      type : Object as PropType<TweetData>,
+      required : true
+    },
   },
 
   setup(props) {
-    const tweet = ref<string | undefined>(props.url);
+    const url = ref<string>("https://twitter.com/" + props.tweet.name + "/status/" + props.tweet.id);
 
     onMounted(() => {
       const plugin = document.createElement("script");
@@ -75,7 +86,7 @@ export default defineComponent({
       })
     }
 
-    return { tweet, beforeEnter, enter, leave };
+    return { url, beforeEnter, enter, leave };
   },
 });
 </script>
