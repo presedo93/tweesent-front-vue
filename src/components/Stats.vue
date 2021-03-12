@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <br />
-    <br />
     <div class="row">
       <div class="col-md-4">
         <p class="numbers negatives">{{ score.negatives }}%</p>
