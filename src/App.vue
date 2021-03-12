@@ -2,7 +2,7 @@
   <div :class="mode">
     <NavBar :navbarMode="mode" :bgMode="mode" @changemode="changeMode" />
     <Search :mode="mode" @search="searched" />
-    <stats :negative="80.2" :neutral="9.8" :positive="10.0"/>
+    <stats v-if="showStats" :scores="scores" />
     <div class="row">
       <ul>
         <li v-for="tw in tweets" :key="tw">
@@ -24,7 +24,7 @@ import NavBar from "@/components/NavBar.vue"; // @ is an alias to /src
 import Search from "@/components/Search.vue"; // @ is an alias to /src
 import CardContainer from "@/components/CardContainer.vue"; // @ is an alias to /src
 import Tweet, { TweetData } from "@/components/Tweet.vue";
-import Stats from "@/components/Stats.vue";
+import Stats, { Scores } from "@/components/Stats.vue";
 
 import { defineComponent } from "vue";
 
@@ -33,7 +33,9 @@ export default defineComponent({
     return {
       mode: "dark",
       inputSearch: "",
+      showStats: false as boolean,
       tweets: [] as TweetData[],
+      scores: new Scores() as Scores
     };
   },
   methods: {
@@ -49,8 +51,10 @@ export default defineComponent({
         this.mode = "dark";
       }
     },
-    searched(tweets: TweetData[]) {
+    searched(tweets: TweetData[], scores: Scores) {
       this.tweets = tweets;
+      this.scores = scores;
+      this.showStats = true;
     },
   },
   watch: {
