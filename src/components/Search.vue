@@ -16,17 +16,13 @@ import { TweetData } from "@/components/Tweet.vue";
 import { Scores } from "@/components/Stats.vue";
 
 export default defineComponent({
-  data() {
-    return {
-      modeOn: "O",
-    };
-  },
   props: ["mode"],
-  methods: {
-    remove(event: any) {
+  setup(prop, context) {
+    function remove(event: any) {
       event.target.previousElementSibling.value = "";
-    },
-    search(event: any) {
+    }
+
+    function search(event: any) {
       const path = "http://127.0.0.1:5000/gettweet?count=10";
       const tweets: TweetData[] = [];
       const score: Scores = new Scores();
@@ -41,7 +37,7 @@ export default defineComponent({
               name: answer.data.tweets[i].name,
               text: answer.data.tweets[i].text,
               sentiment: answer.data.tweets[i].sentiment,
-              confidence: answer.data.tweets[i].confidence
+              confidence: answer.data.tweets[i].confidence,
             });
             if (answer.data.tweets[i].sentiment === "negative") {
               score.negatives += 1;
@@ -52,12 +48,17 @@ export default defineComponent({
             }
           }
           score.perc(len);
-          this.$emit("search", tweets, score);
+          context.emit("search", tweets, score);
         })
         .catch((error) => {
           console.log("ERROR::", error);
         });
-    },
+    }
+
+    return{
+      remove, 
+      search
+    };
   },
 });
 </script>
