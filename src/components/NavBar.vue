@@ -12,33 +12,33 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 
 export default defineComponent({
-  data() {
-    return {
-      modeOn: this.navbarMode
-    };
-  },
   props: ["navbarMode", "bgMode"],
-  methods: {
-    changemode() {
-      this.$emit("changemode");
+  setup(prop, context) {
+    function changemode() {
+      context.emit("changemode");
     }
-  },
-  computed: {
-    modeClass(): string {
-      return "navbar-" + this.navbarMode + " bg-" + this.bgMode;
-    },
-    modeIcon(): string {
-      if(this.navbarMode === "dark"){
+
+    const modeClass = computed(function () {
+      return "navbar-" + prop.navbarMode + " bg-" + prop.bgMode;
+    });
+
+    const modeIcon = computed(function () {
+      if (prop.navbarMode === "dark") {
         return "far fa-moon";
-      }
-      else{
+      } else {
         return "far fa-sun";
       }
-    }
-  }
+    });
+
+    return {
+      changemode,
+      modeClass,
+      modeIcon,
+    };
+  },
 });
 </script>
 
@@ -48,11 +48,11 @@ export default defineComponent({
   font-size: 40px;
 }
 
-.mode{
-    margin-right: 50px;
+.mode {
+  margin-right: 50px;
 }
 
-.far:hover{
+.far:hover {
   font-weight: 900;
 }
 
