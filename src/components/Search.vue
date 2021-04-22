@@ -10,14 +10,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import axios from "axios";
 import { TweetData } from "@/components/Tweet.vue";
 import { Scores } from "@/components/Stats.vue";
+import { useStore} from "vuex";
 
 export default defineComponent({
-  props: ["mode"],
   setup(prop, context) {
+
+    const store = useStore();
+
+    const mode = computed(function(){
+      return store.getters.theme;
+    });
+
     function remove(event: any) {
       event.target.previousElementSibling.value = "";
     }
@@ -57,7 +64,8 @@ export default defineComponent({
 
     return{
       remove, 
-      search
+      search,
+      mode
     };
   },
 });

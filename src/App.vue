@@ -1,7 +1,7 @@
 <template>
   <div :class="mode">
-    <NavBar :navbarMode="mode" :bgMode="mode" @changemode="changeMode" />
-    <Search :mode="mode" @search="searched" />
+    <NavBar/>
+    <Search @search="searched" />
     <stats v-if="showStats" :scores="scores" />
     <div class="row">
       <div class="col-4"></div>
@@ -15,9 +15,9 @@
       <div class="col-4"></div>
     </div>
     <div class="row">
-      <div class="col-4"><CardContainer :mode="mode" :type="'Negative'" /></div>
-      <div class="col-4"><CardContainer :mode="mode" :type="'Neutral'" /></div>
-      <div class="col-4"><CardContainer :mode="mode" :type="'Positive'" /></div>
+      <div class="col-4"><CardContainer :type="'Negative'" /></div>
+      <div class="col-4"><CardContainer :type="'Neutral'" /></div>
+      <div class="col-4"><CardContainer :type="'Positive'" /></div>
     </div>
     <router-view />
   </div>
@@ -30,8 +30,8 @@ import CardContainer from "@/components/CardContainer.vue"; // @ is an alias to 
 import Tweet, { TweetData } from "@/components/Tweet.vue";
 import Stats, { Scores } from "@/components/Stats.vue";
 
-import { defineComponent, ref, onMounted, watch, reactive } from "vue";
-
+import { defineComponent, ref, onMounted, watch, reactive, computed } from "vue";
+import { useStore} from "vuex";
 export default defineComponent({
   components: {
     NavBar,
@@ -41,18 +41,20 @@ export default defineComponent({
     Stats,
   },
   setup(prop) {
-    const mode = ref("dark");
+    //const mode = ref("dark");
     const inputSearch = ref("");
     const showStats = ref(false);
     const tweets = ref<TweetData[]>();
     const scores = ref<Scores>();
+    const store = useStore();
+
+    const mode = computed(function(){
+      debugger;
+      return store.getters.theme;
+    });
 
     function changeMode() {
-      if (mode.value === "dark") {
-        mode.value = "light";
-      } else {
-        mode.value = "dark";
-      }
+      store.commit('changeTheme');
     }
 
     function keyPress(event: any) {
