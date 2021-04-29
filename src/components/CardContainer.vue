@@ -12,7 +12,7 @@
 import { computed, ref, defineComponent } from "vue";
 
 export default defineComponent({
-  props: ["mode", "type"],
+  props: ["type"],
   setup(props) {
     const getIcon = computed(function () {
       return props.type === "Positive"

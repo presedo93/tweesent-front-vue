@@ -12,21 +12,29 @@
 </template>
 
 <script lang="ts">
+import store from "@/store";
 import { defineComponent, computed } from "vue";
+import { useStore} from "vuex";
 
 export default defineComponent({
-  props: ["navbarMode", "bgMode"],
   setup(prop, context) {
+
+    const store = useStore();
+
+    const mode = computed(function(){
+      return store.getters.theme;
+    });
+
     function changemode() {
-      context.emit("changemode");
+      store.commit("changeTheme");
     }
 
     const modeClass = computed(function () {
-      return "navbar-" + prop.navbarMode + " bg-" + prop.bgMode;
+      return "navbar-" + mode.value + " bg-" + mode.value;
     });
 
     const modeIcon = computed(function () {
-      if (prop.navbarMode === "dark") {
+      if (mode.value === "dark") {
         return "far fa-moon";
       } else {
         return "far fa-sun";
@@ -37,6 +45,7 @@ export default defineComponent({
       changemode,
       modeClass,
       modeIcon,
+      mode
     };
   },
 });
