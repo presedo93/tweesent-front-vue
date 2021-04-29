@@ -9,6 +9,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, PropType } from "vue";
 import gsap from "gsap";
+import { useStore } from "vuex";
 
 export interface TweetData {
   id: string;
@@ -27,18 +28,22 @@ export default defineComponent({
   },
 
   setup(props) {
+
+    const store = useStore();
+
     const url = ref<string>(
       "https://twitter.com/" + props.tweet.name + "/status/" + props.tweet.id
     );
     const texto = ref<string>(props.tweet.text);
     const identificador = ref<string>(props.tweet.id);
     const sentiment = ref<string>(props.tweet.sentiment);
-
+    
     function removeElement(elementToDelete: any) {
       elementToDelete = document.getElementById(elementToDelete);
       return function () {
         debugger;
         elementToDelete.parentElement.parentElement.remove();
+        store.commit("addTweet", props.tweet)
       };
     }
 

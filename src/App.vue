@@ -6,8 +6,8 @@
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
-        <ul>
-          <li v-for="tw in tweets" :key="tw">
+        <ul class="principal">
+          <li class="principal" v-for="tw in tweets" :key="tw">
             <tweet class="animation" :tweet="tw" />
           </li>
         </ul>
@@ -15,9 +15,9 @@
       <div class="col-4"></div>
     </div>
     <div class="row">
-      <div class="col-4"><CardContainer :type="'Negative'" /></div>
-      <div class="col-4"><CardContainer :type="'Neutral'" /></div>
-      <div class="col-4"><CardContainer :type="'Positive'" /></div>
+      <div class="col-4"><CardContainer :type="'negative'" /></div>
+      <div class="col-4"><CardContainer :type="'neutral'" /></div>
+      <div class="col-4"><CardContainer :type="'positive'" /></div>
     </div>
     <router-view />
   </div>
@@ -124,14 +124,14 @@ export default defineComponent({
   background-color: #cbccd1;
 }
 
-ul {
+ul.principal {
   display: inline-block;
   margin: 0;
   padding: 0;
   list-style: none;
   padding-left: 0px !important;
 }
-li {
+li.principal {
   margin: 0;
   padding: 0;
   height: 200px;
@@ -139,7 +139,7 @@ li {
   margin-bottom: -150px;
   clear: both;
 }
-li:last-child {
+li.principal:last-child {
   margin-bottom: 0;
 }
 /*
