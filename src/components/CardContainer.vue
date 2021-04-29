@@ -1,43 +1,43 @@
 <template>
   <div class="container-card">
     <div class="container-header" :class="type">
-      <span>{{type}}</span><i :class="getIcon" class="margin20"></i>
+      <span>{{ type }}</span
+      ><i :class="getIcon" class="margin20"></i>
     </div>
-    <div class="container-body">
-      
-    </div>
+    <div class="container-body"></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, ref, defineComponent } from "vue";
 
 export default defineComponent({
-  data() {
-    return {
-      modeOn: this.mode,
-      typeOn: this.type
-    };
-  },
   props: ["mode", "type"],
-  methods: {},
-  computed: {
-    getIcon() : string{
-      return this.type === "Positive" ? 'fas fa-laugh-beam' : this.type === "Neutral" ? 'far fa-smile' : 'far fa-frown';
-    }
+  setup(props) {
+    const getIcon = computed(function () {
+      return props.type === "Positive"
+        ? "fas fa-laugh-beam"
+        : props.type === "Neutral"
+        ? "far fa-smile"
+        : "far fa-frown";
+    });
+
+    return {
+      getIcon,
+    };
   },
 });
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
 
-span{
-   font-family: 'Open Sans',serif;
+span {
+  font-family: "Open Sans", serif;
 }
 
-.container-card{
+.container-card {
   margin-top: 200px;
 }
 .container-header {
@@ -70,11 +70,11 @@ span{
   }
 }
 
-.margin20{
+.margin20 {
   margin-left: 20px;
 }
 
-.container-body{
+.container-body {
   background-color: #484949;
   height: 800px;
   width: 90%;

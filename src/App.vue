@@ -6,11 +6,11 @@
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
-      <ul>
-        <li v-for="tw in tweets" :key="tw">
-          <tweet class="animation" :tweet="tw" />
-        </li>
-      </ul>
+        <ul>
+          <li v-for="tw in tweets" :key="tw">
+            <tweet class="animation" :tweet="tw" />
+          </li>
+        </ul>
       </div>
       <div class="col-4"></div>
     </div>
@@ -30,56 +30,66 @@ import CardContainer from "@/components/CardContainer.vue"; // @ is an alias to 
 import Tweet, { TweetData } from "@/components/Tweet.vue";
 import Stats, { Scores } from "@/components/Stats.vue";
 
-import { defineComponent } from "vue";
+import { defineComponent, ref, onMounted, watch, reactive } from "vue";
 
 export default defineComponent({
-  data() {
-    return {
-      mode: "dark",
-      inputSearch: "",
-      showStats: false as boolean,
-      tweets: [] as TweetData[],
-      scores: new Scores() as Scores
-    };
-  },
-  methods: {
-    keyPress(event: any) {
-      if (event.key === "m" && event.ctrlKey === true) {
-        this.changeMode();
-      }
-    },
-    changeMode() {
-      if (this.mode === "dark") {
-        this.mode = "light";
-      } else {
-        this.mode = "dark";
-      }
-    },
-    searched(tweets: TweetData[], scores: Scores) {
-      this.tweets = tweets;
-      this.scores = scores;
-      this.showStats = true;
-    },
-  },
-  watch: {
-    mode(value: any) {
-      if (value == "dark") {
-        document.body.classList.add("dark");
-      } else {
-        document.body.classList.remove("dark");
-      }
-    },
-  },
   components: {
     NavBar,
     Search,
     CardContainer,
     Tweet,
-    Stats
+    Stats,
   },
-  mounted() {
-    window.addEventListener("keyup", this.keyPress);
-    document.body.classList.add("dark");
+  setup(prop) {
+    const mode = ref("dark");
+    const inputSearch = ref("");
+    const showStats = ref(false);
+    const tweets = ref<TweetData[]>();
+    const scores = ref<Scores>();
+
+    function changeMode() {
+      if (mode.value === "dark") {
+        mode.value = "light";
+      } else {
+        mode.value = "dark";
+      }
+    }
+
+    function keyPress(event: any) {
+      if (event.key === "m" && event.ctrlKey === true) {
+        changeMode();
+      }
+    }
+
+    function searched(newTweets: TweetData[], newScores: Scores) {
+      tweets.value = newTweets;
+      scores.value = newScores;
+      showStats.value = true;
+    }
+
+    watch(mode, (newValue, oldValue) => {
+      if (newValue == "dark") {
+        document.body.classList.add("dark");
+      } else {
+        document.body.classList.remove("dark");
+      }
+    });
+
+    onMounted(() => {
+      window.addEventListener("keyup", keyPress);
+      document.body.classList.add("dark");
+    });
+
+    return {
+      mode,
+      inputSearch,
+      showStats,
+      tweets,
+      scores,
+      keyPress,
+      changeMode,
+      searched,
+    };
   },
 });
 </script>
@@ -117,7 +127,7 @@ ul {
   margin: 0;
   padding: 0;
   list-style: none;
-  padding-left: 0px !important; 
+  padding-left: 0px !important;
 }
 li {
   margin: 0;
