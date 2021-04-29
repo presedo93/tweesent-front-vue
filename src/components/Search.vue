@@ -123,7 +123,7 @@ body {
       }
       + span:after {
         top: 0;
-        right: 10px;
+        right: 12px;
         opacity: 1;
         transition: top 300ms ease-out 1100ms, right 300ms ease-out 1100ms,
           opacity 300ms ease 1100ms;
@@ -139,6 +139,7 @@ body {
     position: absolute;
     bottom: -13px;
     right: -15px;
+    background: transparent !important;
     transition: bottom 300ms ease-out 300ms, right 300ms ease-out 300ms;
     &:before,
     &:after {
@@ -147,9 +148,6 @@ body {
       border-left: solid 2px #7a7a7a;
       position: absolute;
       transform: rotate(-45deg);
-    }
-    &.dark {
-      background: transparent !important;
     }
     &.dark:before,
     &.dark:after {
