@@ -41,7 +41,12 @@ export default defineComponent({
           for (let i = 0; i < answer.data.tweets.length; i++) {
             tweets.push({
               id: answer.data.tweets[i].id,
+              created: answer.data.tweets[i].created,
               name: answer.data.tweets[i].name,
+              user: answer.data.tweets[i].user,
+              img: answer.data.tweets[i].img,
+              likes: "80",
+              retweets: "288",
               text: answer.data.tweets[i].text,
               sentiment: answer.data.tweets[i].sentiment,
               confidence: answer.data.tweets[i].confidence,

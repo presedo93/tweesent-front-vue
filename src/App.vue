@@ -1,6 +1,9 @@
 <template>
   <div :class="mode">
-    <NavBar/>
+    <NavBar />
+
+    <!-- <tweet :tweet="single"/> -->
+
     <Search @search="searched" />
     <stats v-if="showStats" :scores="scores" />
     <div class="row">
@@ -30,8 +33,15 @@ import CardContainer from "@/components/CardContainer.vue"; // @ is an alias to 
 import Tweet, { TweetData } from "@/components/Tweet.vue";
 import Stats, { Scores } from "@/components/Stats.vue";
 
-import { defineComponent, ref, onMounted, watch, reactive, computed } from "vue";
-import { useStore} from "vuex";
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  watch,
+  reactive,
+  computed,
+} from "vue";
+import { useStore } from "vuex";
 export default defineComponent({
   components: {
     NavBar,
@@ -41,6 +51,19 @@ export default defineComponent({
     Stats,
   },
   setup(prop) {
+    // const single = ref<TweetData>({
+    //   id: "1397616283747770374",
+    //   created: "Wed May 26 18:11:03 +0000 2021",
+    //   name: "Victor Joshua",
+    //   user:"VictorAndJoshua",
+    //   img: "http://pbs.twimg.com/profile_images/1216312559894171648/sV2ggHVa_normal.jpg",
+    //   likes: "80",
+    //   retweets: "288",
+    //   text: "RT @Cointelegraph: .@elonmusk isn't actually the CEO of Dogecoin https://t.co/xuQNLgrwbx",
+    //   sentiment: "neutral",
+    //   confidence: "0.88",
+    // });
+
     //const mode = ref("dark");
     const inputSearch = ref("");
     const showStats = ref(false);
@@ -48,13 +71,12 @@ export default defineComponent({
     const scores = ref<Scores>();
     const store = useStore();
 
-    const mode = computed(function(){
-      debugger;
+    const mode = computed(function () {
       return store.getters.theme;
     });
 
     function changeMode() {
-      store.commit('changeTheme');
+      store.commit("changeTheme");
     }
 
     function keyPress(event: any) {
@@ -83,6 +105,7 @@ export default defineComponent({
     });
 
     return {
+      // single,
       mode,
       inputSearch,
       showStats,
