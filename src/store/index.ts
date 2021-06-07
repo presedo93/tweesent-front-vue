@@ -1,5 +1,17 @@
 import { createStore } from "vuex";
-import { TweetData } from "@/components/Tweet.vue";
+
+export interface TweetData {
+  id: string;
+  created: string;
+  name: string;
+  user: string;
+  img: string;
+  likes: string;
+  retweets: string;
+  text: string;
+  sentiment: string;
+  confidence: string;
+}
 
 export default createStore({
   state: {

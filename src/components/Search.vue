@@ -12,15 +12,11 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import axios from "axios";
-import { TweetData } from "@/components/Tweet.vue";
 import { Scores } from "@/components/Stats.vue";
-import { useStore} from "vuex";
+import store, { TweetData } from "@/store";
 
 export default defineComponent({
   setup(prop, context) {
-
-    const store = useStore();
-
     const mode = computed(function(){
       return store.getters.theme;
     });

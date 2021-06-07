@@ -1,66 +1,51 @@
 <template>
-  <div>
-    <div :id="identificador" class="card" :class="identificador">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-2 text-sm-start">
-            <img class="avator" :src="props.tweet.img" />
-          </div>
-          <div class="col text-sm-start name-user">
-            <h6 class="name">{{ props.tweet.name }}</h6>
-            <p class="user">@{{ props.tweet.user }}</p>
-          </div>
-          <div class="col text-sm-end">
-            <i class="fab fa-twitter"></i>
-          </div>
+  <a :href="url" :id="props.tweet.id" class="card text-decoration-none" :class="$store.getters.theme">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-2 text-sm-start">
+          <img class="avator" :src="props.tweet.img" />
         </div>
-        <div class="card-text text-sm-start">{{ props.tweet.text }}</div>
-        <div class="text-sm-start created">{{ props.tweet.created }}</div>
-        <hr />
-        <div class="row">
-          <div class="col-md-3 offset-sm-1 text-sm-start">
-            <div class="row">
-              <div class="col">
-                <i class="far fa-heart"></i>
-              </div>
-              <div class="col">
-                <p>{{ props.tweet.likes }}</p>
-              </div>
+        <div class="col text-sm-start name-user">
+          <h6 class="name">{{ props.tweet.name }}</h6>
+          <p class="user">@{{ props.tweet.user }}</p>
+        </div>
+        <div class="col text-sm-end">
+          <i class="fab fa-twitter"></i>
+        </div>
+      </div>
+      <div class="card-text text-sm-start">{{ props.tweet.text }}</div>
+      <div class="text-sm-start created">{{ props.tweet.created }}</div>
+      <hr />
+      <div class="row icons">
+        <div class="col-md-3 text-sm-start">
+          <div class="row">
+            <div class="col">
+              <i class="far fa-heart"></i>
+            </div>
+            <div class="col numbers">
+              <p>{{ props.tweet.likes }}</p>
             </div>
           </div>
-          <div class="col-md-3 text-sm-start">
-            <div class="row">
-              <div class="col">
-                <i class="far fa-comment-alt"></i>
-              </div>
-              <div class="col">
-                <p>{{ props.tweet.retweets }}</p>
-              </div>
+        </div>
+        <div class="col-md-3 text-sm-start">
+          <div class="row">
+            <div class="col">
+              <i class="far fa-comment-alt"></i>
+            </div>
+            <div class="col numbers">
+              <p>{{ props.tweet.retweets }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </a>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, PropType } from "vue";
 import gsap from "gsap";
-import { useStore } from "vuex";
-
-export interface TweetData {
-  id: string;
-  created: string;
-  name: string;
-  user: string;
-  img: string;
-  likes: string;
-  retweets: string;
-  text: string;
-  sentiment: string;
-  confidence: string;
-}
+import store, { TweetData } from "@/store";
 
 export default defineComponent({
   props: {
@@ -71,19 +56,14 @@ export default defineComponent({
   },
 
   setup(props) {
-    const store = useStore();
-
     const url = ref<string>(
-      "https://twitter.com/" + props.tweet.name + "/status/" + props.tweet.id
+      "https://twitter.com/" + props.tweet.user + "/status/" + props.tweet.id
     );
-    const texto = ref<string>(props.tweet.text);
     const identificador = ref<string>(props.tweet.id);
-    const sentiment = ref<string>(props.tweet.sentiment);
 
     function removeElement(elementToDelete: any) {
       elementToDelete = document.getElementById(elementToDelete);
       return function () {
-        debugger;
         elementToDelete.parentElement.parentElement.remove();
         store.commit("addTweet", props.tweet);
       };
@@ -92,9 +72,9 @@ export default defineComponent({
     function animationCard(el: any) {
       let positionX = 0;
       const positionY = 500;
-      if (sentiment.value == "positive") {
+      if (props.tweet.sentiment == "positive") {
         positionX = 500;
-      } else if (sentiment.value == "negative") {
+      } else if (props.tweet.sentiment == "negative") {
         positionX = -500;
       } else {
         positionX = 0;
@@ -115,23 +95,17 @@ export default defineComponent({
           opacity: 0,
           y: positionY,
         })
-        .call(removeElement(identificador.value));
+        .call(removeElement(props.tweet.id));
     }
 
     onMounted(() => {
-      const element = document.getElementById(identificador.value);
+      const element = document.getElementById(props.tweet.id);
       animationCard(element);
     });
-
-    console.log(props.tweet.img);
 
     return {
       props,
       url,
-      texto,
-      identificador,
-      animationCard,
-      removeElement,
     };
   },
 });
@@ -189,16 +163,30 @@ hr {
 
 .user {
   font-size: 0.84rem;
-  color: gray;
+  color: #a5aeb3;
+}
+
+.icons {
+  margin-top: 1rem;
+}
+
+.numbers {
+  position: relative;
+  margin-left: -3rem;
 }
 
 .created {
   font-size: 0.8rem;
-  color: gray;
+  color: #a5aeb3;
 }
 
 .avator {
   border-radius: 100px;
   width: 48px;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
 }
 </style>
