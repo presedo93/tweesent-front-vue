@@ -92,8 +92,8 @@ span {
   margin-left: 20px;
 }
 
-.margintop20 {
-  margin-top: 20px;
+.margin20 {
+  margin: 20px;
 }
 
 .container-body {

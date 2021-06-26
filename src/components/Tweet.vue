@@ -74,12 +74,19 @@ export default defineComponent({
     }
 
     function animationCard(el: any) {
+
+      // Calculate the difference (dynamically)
+
+      const pointNegative = document.getElementsByClassName("container-header negative")[0] as HTMLElement;
+      const pointPositive = document.getElementsByClassName("container-header positive")[0] as HTMLElement;
+      const pointNeutral = document.getElementsByClassName("container-header neutral")[0] as HTMLElement;
+
       let positionX = 0;
       const positionY = 500;
       if (props.tweet.sentiment == "positive") {
-        positionX = 500;
+        positionX = pointPositive.offsetLeft - pointNeutral.offsetLeft;
       } else if (props.tweet.sentiment == "negative") {
-        positionX = -500;
+        positionX = pointNegative.offsetLeft - pointNeutral.offsetLeft;
       } else {
         positionX = 0;
       }

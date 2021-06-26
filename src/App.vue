@@ -2,23 +2,26 @@
   <div :class="$store.getters.theme">
     <NavBar />
     <Search @search="searched" />
-    <stats v-if="showStats" :scores="scores" />
-    <div class="row">
-      <div class="col-4"></div>
-      <div class="col-4">
-        <ul class="principal">
-          <li class="principal" v-for="tw in tweets" :key="tw">
-            <tweet :animation="true" :tweet="tw" />
-          </li>
-        </ul>
+    <div v-if="!showLoading">
+      <stats v-if="showStats" :scores="scores" />
+      <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <ul class="principal">
+            <li class="principal" v-for="tw in tweets" :key="tw">
+              <tweet :animation="true" :tweet="tw" />
+            </li>
+          </ul>
+        </div>
+        <div class="col-4"></div>
       </div>
-      <div class="col-4"></div>
+      <div class="row">
+        <div class="col-4"><CardContainer :type="'negative'" /></div>
+        <div class="col-4"><CardContainer :type="'neutral'" /></div>
+        <div class="col-4"><CardContainer :type="'positive'" /></div>
+      </div>
     </div>
-    <div class="row">
-      <div class="col-4"><CardContainer :type="'negative'" /></div>
-      <div class="col-4"><CardContainer :type="'neutral'" /></div>
-      <div class="col-4"><CardContainer :type="'positive'" /></div>
-    </div>
+    <Loading v-if="showLoading" />
     <router-view />
   </div>
 </template>
@@ -28,16 +31,11 @@ import NavBar from "@/components/NavBar.vue"; // @ is an alias to /src
 import Search from "@/components/Search.vue"; // @ is an alias to /src
 import CardContainer from "@/components/CardContainer.vue"; // @ is an alias to /src
 import Tweet from "@/components/Tweet.vue";
+import Loading from "@/components/Loading.vue";
 import Stats, { Scores } from "@/components/Stats.vue";
 import store, { TweetData } from "@/store";
 
-import {
-  defineComponent,
-  ref,
-  onMounted,
-  watch,
-  computed,
-} from "vue";
+import { defineComponent, ref, onMounted, watch, computed } from "vue";
 import { useStore } from "vuex";
 export default defineComponent({
   components: {
@@ -46,15 +44,21 @@ export default defineComponent({
     CardContainer,
     Tweet,
     Stats,
+    Loading,
   },
   setup(prop) {
     const inputSearch = ref("");
     const showStats = ref(false);
+
     const tweets = ref<TweetData[]>();
     const scores = ref<Scores>();
 
     const mode = computed(function () {
       return store.getters.theme;
+    });
+
+    const showLoading = computed(function () {
+      return store.getters.showLoading;
     });
 
     function changeMode() {
@@ -90,6 +94,7 @@ export default defineComponent({
       mode,
       inputSearch,
       showStats,
+      showLoading,
       tweets,
       scores,
       keyPress,

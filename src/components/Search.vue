@@ -29,6 +29,7 @@ export default defineComponent({
       const path = "http://127.0.0.1:5000/gettweet?count=10";
       const tweets: TweetData[] = [];
       const score: Scores = new Scores();
+      store.commit("changeLoading");
 
       axios
         .post(path, { text: event.target.value })
@@ -57,6 +58,7 @@ export default defineComponent({
           }
           score.perc(len);
           context.emit("search", tweets, score);
+          store.commit("changeLoading");
         })
         .catch((error) => {
           console.log("ERROR::", error);
