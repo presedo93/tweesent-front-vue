@@ -4,10 +4,10 @@
       <span>{{ type }}</span
       ><i :class="getIcon" class="margin20"></i>
     </div>
-    <div class="container-body">
+    <div class="container-body2">
       <ul>
-      <li v-for="tw in tweets" :key="tw">
-        <tweet :tweet=tw />
+      <li class="margintop20" v-for="tw in tweets" :key="tw">
+        <tweet v-if="tw.sentiment==type" :tweet=tw />
       </li>
     </ul>
     </div>
@@ -90,6 +90,10 @@ span {
 
 .margin20 {
   margin-left: 20px;
+}
+
+.margintop20 {
+  margin-top: 20px;
 }
 
 .container-body {

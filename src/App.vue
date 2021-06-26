@@ -8,7 +8,7 @@
       <div class="col-4">
         <ul class="principal">
           <li class="principal" v-for="tw in tweets" :key="tw">
-            <tweet class="animation" :tweet="tw" />
+            <tweet :animation="true" :tweet="tw" />
           </li>
         </ul>
       </div>

@@ -53,6 +53,10 @@ export default defineComponent({
       type: Object as PropType<TweetData>,
       required: true,
     },
+    animation: {
+      type: Boolean,
+      default: false
+    }
   },
 
   setup(props) {
@@ -99,8 +103,10 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      const element = document.getElementById(props.tweet.id);
-      animationCard(element);
+      if (props.animation) {
+        const element = document.getElementById(props.tweet.id);
+        animationCard(element);
+      }
     });
 
     return {
