@@ -6,7 +6,7 @@
     </div>
     <div class="container-body2">
       <ul>
-      <li class="margintop20" v-for="tw in tweets" :key="tw">
+      <li class="marginall20" v-for="tw in tweets" :key="tw">
         <tweet v-if="tw.sentiment==type" :tweet=tw />
       </li>
     </ul>
@@ -92,7 +92,7 @@ span {
   margin-left: 20px;
 }
 
-.margin20 {
+.marginall20 {
   margin: 20px;
 }
 
