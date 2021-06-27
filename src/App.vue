@@ -1,97 +1,20 @@
 <template>
-  <div :class="mode">
-    <NavBar/>
-    <Search @search="searched" />
-    <stats v-if="showStats" :scores="scores" />
-    <div class="row">
-      <div class="col-4"></div>
-      <div class="col-4">
-        <ul class="principal">
-          <li class="principal" v-for="tw in tweets" :key="tw">
-            <tweet class="animation" :tweet="tw" />
-          </li>
-        </ul>
-      </div>
-      <div class="col-4"></div>
-    </div>
-    <div class="row">
-      <div class="col-4"><CardContainer :type="'negative'" /></div>
-      <div class="col-4"><CardContainer :type="'neutral'" /></div>
-      <div class="col-4"><CardContainer :type="'positive'" /></div>
-    </div>
+  <div :class="$store.getters.theme">
+    <NavBar />
     <router-view />
   </div>
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import NavBar from "@/components/NavBar.vue"; // @ is an alias to /src
-import Search from "@/components/Search.vue"; // @ is an alias to /src
-import CardContainer from "@/components/CardContainer.vue"; // @ is an alias to /src
-import Tweet, { TweetData } from "@/components/Tweet.vue";
-import Stats, { Scores } from "@/components/Stats.vue";
 
-import { defineComponent, ref, onMounted, watch, reactive, computed } from "vue";
-import { useStore} from "vuex";
 export default defineComponent({
   components: {
-    NavBar,
-    Search,
-    CardContainer,
-    Tweet,
-    Stats,
+    NavBar
   },
-  setup(prop) {
-    //const mode = ref("dark");
-    const inputSearch = ref("");
-    const showStats = ref(false);
-    const tweets = ref<TweetData[]>();
-    const scores = ref<Scores>();
-    const store = useStore();
-
-    const mode = computed(function(){
-      debugger;
-      return store.getters.theme;
-    });
-
-    function changeMode() {
-      store.commit('changeTheme');
-    }
-
-    function keyPress(event: any) {
-      if (event.key === "m" && event.ctrlKey === true) {
-        changeMode();
-      }
-    }
-
-    function searched(newTweets: TweetData[], newScores: Scores) {
-      tweets.value = newTweets;
-      scores.value = newScores;
-      showStats.value = true;
-    }
-
-    watch(mode, (newValue, oldValue) => {
-      if (newValue == "dark") {
-        document.body.classList.add("dark");
-      } else {
-        document.body.classList.remove("dark");
-      }
-    });
-
-    onMounted(() => {
-      window.addEventListener("keyup", keyPress);
-      document.body.classList.add("dark");
-    });
-
-    return {
-      mode,
-      inputSearch,
-      showStats,
-      tweets,
-      scores,
-      keyPress,
-      changeMode,
-      searched,
-    };
+  setup() {
+    return { }
   },
 });
 </script>

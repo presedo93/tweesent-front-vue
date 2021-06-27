@@ -4,12 +4,10 @@
       <span>{{ type }}</span
       ><i :class="getIcon" class="margin20"></i>
     </div>
-    <div class="container-body">
+    <div class="container-body2">
       <ul>
-      <li v-for="tw in tweets" :key="tw">
-        <div class="card" v-if="tw.sentiment==type">
-          <div class="card-body">{{tw.text}}</div>
-        </div>
+      <li class="marginall20" v-for="tw in tweets" :key="tw">
+        <tweet v-if="tw.sentiment==type" :tweet=tw />
       </li>
     </ul>
     </div>
@@ -19,9 +17,13 @@
 <script lang="ts">
 import { computed, ref, defineComponent } from "vue";
 import { useStore } from "vuex";
+import Tweet from "@/components/Tweet.vue";
 
 export default defineComponent({
   props: ["type"],
+  components: {
+    Tweet
+  },
   setup(props) {
     const store = useStore();
 
@@ -90,6 +92,10 @@ span {
   margin-left: 20px;
 }
 
+.marginall20 {
+  margin: 20px;
+}
+
 .container-body {
   background-color: #484949;
   height: 100%;
@@ -105,10 +111,6 @@ span {
   font-family: "Lato";
   font-size: 1.6em;
   position: relative;
-}
-
-.card-body {
-  color: black;
 }
 
 ul {

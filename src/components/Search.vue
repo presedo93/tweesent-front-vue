@@ -12,15 +12,11 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import axios from "axios";
-import { TweetData } from "@/components/Tweet.vue";
 import { Scores } from "@/components/Stats.vue";
-import { useStore} from "vuex";
+import store, { TweetData } from "@/store";
 
 export default defineComponent({
   setup(prop, context) {
-
-    const store = useStore();
-
     const mode = computed(function(){
       return store.getters.theme;
     });
@@ -33,6 +29,7 @@ export default defineComponent({
       const path = "http://127.0.0.1:5000/gettweet?count=10";
       const tweets: TweetData[] = [];
       const score: Scores = new Scores();
+      store.commit("changeLoading");
 
       axios
         .post(path, { text: event.target.value })
@@ -41,7 +38,12 @@ export default defineComponent({
           for (let i = 0; i < answer.data.tweets.length; i++) {
             tweets.push({
               id: answer.data.tweets[i].id,
+              created: answer.data.tweets[i].created,
               name: answer.data.tweets[i].name,
+              user: answer.data.tweets[i].user,
+              img: answer.data.tweets[i].img,
+              likes: "80",
+              retweets: "288",
               text: answer.data.tweets[i].text,
               sentiment: answer.data.tweets[i].sentiment,
               confidence: answer.data.tweets[i].confidence,
@@ -56,6 +58,7 @@ export default defineComponent({
           }
           score.perc(len);
           context.emit("search", tweets, score);
+          store.commit("changeLoading");
         })
         .catch((error) => {
           console.log("ERROR::", error);

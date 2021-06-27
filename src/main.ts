@@ -3,10 +3,13 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.min.js";
+import "bootstrap";
 import "@fortawesome/fontawesome-free/css/all.min.css"
 
-createApp(App)
+const app = createApp(App)
   .use(store)
   .use(router)
-  .mount("#app");
+
+app.component("bootstrap");
+
+app.mount("#app");
