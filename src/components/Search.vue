@@ -1,23 +1,23 @@
 <template>
-  <div class="search-box" :class="mode">
+  <div class="search-box" :class="theme">
     <input
       type="text"
       placeholder=" "
-      :class="mode"
+      :class="theme"
       v-on:keyup.enter="search"
-    /><span v-on:click="remove" :class="mode"></span>
+    /><span v-on:click="remove" :class="theme"></span>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { Scores } from "@/components/Stats.vue";
 import store, { TweetData } from "@/store";
 
 export default defineComponent({
   setup(prop, context) {
-    const mode = computed(function(){
+    const theme = computed(function () {
       return store.getters.theme;
     });
 
@@ -29,28 +29,19 @@ export default defineComponent({
       const path = "http://127.0.0.1:5000/gettweet?count=10";
       const tweets: TweetData[] = [];
       const score: Scores = new Scores();
+
       store.commit("changeLoading");
 
       axios
         .post(path, { text: event.target.value })
-        .then((answer) => {
-          const len = answer.data.tweets.length;
-          for (let i = 0; i < answer.data.tweets.length; i++) {
-            tweets.push({
-              id: answer.data.tweets[i].id,
-              created: answer.data.tweets[i].created,
-              name: answer.data.tweets[i].name,
-              user: answer.data.tweets[i].user,
-              img: answer.data.tweets[i].img,
-              likes: "80",
-              retweets: "288",
-              text: answer.data.tweets[i].text,
-              sentiment: answer.data.tweets[i].sentiment,
-              confidence: answer.data.tweets[i].confidence,
-            });
-            if (answer.data.tweets[i].sentiment === "negative") {
+        .then((answer: AxiosResponse) => {
+          const tweetsResponse = answer.data.tweets;
+          const len = tweetsResponse.length;
+          for (let i = 0; i < len; i++) {
+            tweets.push(tweetsResponse[i]);
+            if (tweetsResponse[i].sentiment === "negative") {
               score.negatives += 1;
-            } else if (answer.data.tweets[i].sentiment === "neutral") {
+            } else if (tweetsResponse[i].sentiment === "neutral") {
               score.neutrals += 1;
             } else {
               score.positives += 1;
@@ -60,15 +51,15 @@ export default defineComponent({
           context.emit("search", tweets, score);
           store.commit("changeLoading");
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
           console.log("ERROR::", error);
         });
     }
 
-    return{
-      remove, 
+    return {
+      remove,
       search,
-      mode
+      theme,
     };
   },
 });
