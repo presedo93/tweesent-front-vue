@@ -5,26 +5,19 @@
 </template>
 
 <script lang="ts">
-import store from "@/store";
-import { defineComponent, computed } from "vue";
+import { defineComponent } from "vue";
 
-export default defineComponent({
-  setup(props) {
-    return {};
-  },
-});
+export default defineComponent({});
 </script>
 
 <style lang="scss" scoped>
-@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap");
-
 .containerLoading {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: 30px;
-  margin-left: -50px;
-  width: 100px;
-  height: 100px;
+  margin-top: 1.8rem;
+  margin-left: -3.2rem;
+  width: 6.25rem;
+  height: 6.25rem;
 }
 </style>

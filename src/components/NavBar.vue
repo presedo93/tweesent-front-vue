@@ -1,12 +1,12 @@
 <template>
-  <nav class="navbar navbar-expand-md" :class="modeClass">
+  <nav class="navbar navbar-expand-md" :class="themeNavBar">
     <div class="mx-auto order-0">
       <a class="navbar-brand mx-auto" href="#"
-        ><span class="icon-logoCompleto"></span
+        ><span class="icon-logo"></span
       ></a>
     </div>
-    <div class="mode" @click="changemode">
-      <i :class="modeIcon"></i>
+    <div class="theme" @click="changeTheme">
+      <i :class="themeIcon"></i>
     </div>
   </nav>
 </template>
@@ -14,27 +14,23 @@
 <script lang="ts">
 import store from "@/store";
 import { defineComponent, computed } from "vue";
-import { useStore} from "vuex";
 
 export default defineComponent({
-  setup(prop, context) {
-
-    const store = useStore();
-
-    const mode = computed(function(){
+  setup() {
+    const theme = computed(function () {
       return store.getters.theme;
     });
 
-    function changemode() {
+    function changeTheme() {
       store.commit("changeTheme");
     }
 
-    const modeClass = computed(function () {
-      return "navbar-" + mode.value + " bg-" + mode.value;
+    const themeNavBar = computed(function () {
+      return "navbar-" + theme.value + " bg-" + theme.value;
     });
 
-    const modeIcon = computed(function () {
-      if (mode.value === "dark") {
+    const themeIcon = computed(function () {
+      if (theme.value === "dark") {
         return "far fa-moon";
       } else {
         return "far fa-sun";
@@ -42,10 +38,10 @@ export default defineComponent({
     });
 
     return {
-      changemode,
-      modeClass,
-      modeIcon,
-      mode
+      changeTheme,
+      themeNavBar,
+      themeIcon,
+      theme,
     };
   },
 });
@@ -53,11 +49,11 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.icon-logoCompleto {
+.icon-logo {
   font-size: 40px;
 }
 
-.mode {
+.theme {
   margin-right: 50px;
 }
 

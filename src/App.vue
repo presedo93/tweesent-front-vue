@@ -7,18 +7,14 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import NavBar from "@/components/NavBar.vue"; // @ is an alias to /src
+import NavBar from "@/components/NavBar.vue";
 
 export default defineComponent({
   components: {
     NavBar
-  },
-  setup() {
-    return { }
-  },
+  }
 });
 </script>
-
 
 <style lang="scss">
 @import "./fonts/style.css";
@@ -65,14 +61,4 @@ li.principal {
 li.principal:last-child {
   margin-bottom: 0;
 }
-/*
-li:last-child .animation {
-  position: relative;
-  animation: kfpositive 5s both 5s;
-}
-@keyframes kfpositive {
-  0%   {left:0px; top:0px;}
-  50%  {left:110%; top:0px; opacity: 0.5;}
-  100% {left:110%; top:150%; opacity: 0;}
-}*/
 </style>

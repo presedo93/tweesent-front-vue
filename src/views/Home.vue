@@ -20,18 +20,18 @@
     </div>
   </div>
   <Loading v-if="showLoading" />
-  <router-view />
 </template>
 
 <script lang="ts">
-import Search from "@/components/Search.vue"; // @ is an alias to /src
-import CardContainer from "@/components/CardContainer.vue"; // @ is an alias to /src
+import Search from "@/components/Search.vue";
+import CardContainer from "@/components/CardContainer.vue";
 import Tweet from "@/components/Tweet.vue";
 import Loading from "@/components/Loading.vue";
 import Stats, { Scores } from "@/components/Stats.vue";
 import store, { TweetData } from "@/store";
 
 import { defineComponent, ref, onMounted, watch, computed } from "vue";
+
 export default defineComponent({
   components: {
     Search,
@@ -40,14 +40,13 @@ export default defineComponent({
     Stats,
     Loading,
   },
-  setup(prop) {
-    const inputSearch = ref("");
-    const showStats = ref(false);
-
+  setup() {
+    const inputSearch = ref<string>("");
+    const showStats = ref<boolean>(false);
     const tweets = ref<TweetData[]>();
     const scores = ref<Scores>();
 
-    const mode = computed(function () {
+    const theme = computed(function () {
       return store.getters.theme;
     });
 
@@ -55,13 +54,14 @@ export default defineComponent({
       return store.getters.showLoading;
     });
 
-    function changeMode() {
+    function changeTheme() {
       store.commit("changeTheme");
     }
 
-    function keyPress(event: any) {
+    function keyPress(event: KeyboardEvent) {
+      console.log(typeof event);
       if (event.key === "m" && event.ctrlKey === true) {
-        changeMode();
+        changeTheme();
       }
     }
 
@@ -71,7 +71,7 @@ export default defineComponent({
       showStats.value = true;
     }
 
-    watch(mode, (newValue, oldValue) => {
+    watch(theme, newValue => {
       if (newValue == "dark") {
         document.body.classList.remove("light");
         document.body.classList.add("dark");
@@ -87,21 +87,16 @@ export default defineComponent({
     });
 
     return {
-      mode,
+      theme,
       inputSearch,
       showStats,
       showLoading,
       tweets,
       scores,
       keyPress,
-      changeMode,
-      searched,
+      changeTheme,
+      searched
     };
-  },
+  }
 });
 </script>
-
-
-<style scoped lang="scss">
-
-</style>

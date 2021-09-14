@@ -2,31 +2,29 @@
   <div class="container-card">
     <div class="container-header" :class="type">
       <span>{{ type }}</span
-      ><i :class="getIcon" class="margin20"></i>
+      ><i :class="getIcon" class="typeIcon"></i>
     </div>
-    <div class="container-body2">
+    <div>
       <ul>
-      <li class="marginall20" v-for="tw in tweets" :key="tw">
-        <tweet v-if="tw.sentiment==type" :tweet=tw />
-      </li>
-    </ul>
+        <li class="tweetCardContainer" v-for="tw in tweets" :key="tw">
+          <tweet v-if="tw.sentiment == type" :tweet="tw" />
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, ref, defineComponent } from "vue";
-import { useStore } from "vuex";
+import { computed, defineComponent } from "vue";
+import store from "@/store";
 import Tweet from "@/components/Tweet.vue";
 
 export default defineComponent({
   props: ["type"],
   components: {
-    Tweet
+    Tweet,
   },
   setup(props) {
-    const store = useStore();
-
     const tweets = computed(function () {
       return store.getters.tweets;
     });
@@ -41,7 +39,7 @@ export default defineComponent({
 
     return {
       getIcon,
-      tweets
+      tweets,
     };
   },
 });
@@ -50,14 +48,16 @@ export default defineComponent({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+@import "../styles/variables.scss";
 
 span {
   font-family: "Open Sans", serif;
 }
 
 .container-card {
-  margin-top: 200px;
+  margin-top: 12.5rem;
 }
+
 .container-header {
   width: 90%;
   display: block;
@@ -70,12 +70,12 @@ span {
   margin-top: 1em;
   font-family: "Lato";
   font-size: 1.6em;
-  -moz-border-radius-topleft: 8px;
-  -webkit-border-top-left-radius: 8px;
-  border-top-left-radius: 8px;
-  -moz-border-radius-topright: 8px;
-  -webkit-border-top-right-radius: 8px;
-  border-top-right-radius: 8px;
+  -moz-border-radius-topleft: 0.5rem;
+  -webkit-border-top-left-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+  -moz-border-radius-topright: 0.5rem;
+  -webkit-border-top-right-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
   position: relative;
   &.negative {
     background-color: #db3450;
@@ -88,29 +88,12 @@ span {
   }
 }
 
-.margin20 {
-  margin-left: 20px;
+.typeIcon {
+  margin-left: $marginCard;
 }
 
-.marginall20 {
-  margin: 20px;
-}
-
-.container-body {
-  background-color: #484949;
-  height: 100%;
-  width: 90%;
-
-  width: 90%;
-  display: block;
-  margin: auto;
-
-  padding: 1em 0 !important;
-  color: white;
-  text-align: center;
-  font-family: "Lato";
-  font-size: 1.6em;
-  position: relative;
+.tweetCardContainer {
+  margin: $marginCard;
 }
 
 ul {
@@ -122,5 +105,4 @@ ul {
   width: 90%;
   height: 100%;
 }
-
 </style>
