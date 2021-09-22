@@ -51,6 +51,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .icon-logo {
   font-size: 40px;
+  margin-left: 40px;
 }
 
 .theme {
