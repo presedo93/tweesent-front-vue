@@ -1,13 +1,13 @@
 <template>
-  <a :href="url" :id="props.tweet.id" class="card text-decoration-none" :class="$store.getters.theme">
+  <a :href="url" target="_blank" rel="noopener noreferrer" :id="props.tweet.id" class="card text-decoration-none" :class="$store.getters.theme">
     <div class="card-body">
       <div class="row">
         <div class="col-2 text-sm-start">
           <img class="avator" :src="props.tweet.img" />
         </div>
         <div class="col text-sm-start name-user">
-          <h6 class="name">{{ props.tweet.name }}</h6>
-          <p class="user">@{{ props.tweet.user }}</p>
+          <h6 class="user">{{ props.tweet.user }}</h6>
+          <p class="name">@{{ props.tweet.name}}</p>
         </div>
         <div class="col text-sm-end">
           <i class="fab fa-twitter"></i>
@@ -61,7 +61,7 @@ export default defineComponent({
 
   setup(props) {
     const url = ref<string>(
-      "https://twitter.com/" + props.tweet.user + "/status/" + props.tweet.id
+      "https://twitter.com/" + props.tweet.name + "/status/" + props.tweet.id
     );
     const identificador = ref<string>(props.tweet.id);
 
@@ -167,14 +167,14 @@ hr {
   color: #1da0f2;
 }
 
-.name {
+.user {
   font-size: 0.88rem;
   font-weight: bold;
   margin-top: 0.4rem;
   margin-bottom: 0rem;
 }
 
-.user {
+.name {
   font-size: 0.84rem;
   color: #a5aeb3;
 }
