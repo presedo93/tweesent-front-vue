@@ -96,6 +96,7 @@ body {
 }
 
 .search-box {
+  margin-top: 7rem;
   border: solid 2px black;
   display: inline-block;
   position: relative;

@@ -2,7 +2,7 @@
   <Search @search="searched" />
   <div v-if="!showLoading">
     <stats v-if="showStats" :scores="scores" />
-    <div class="row">
+    <div class="row nomargin">
       <div class="col-4"></div>
       <div class="col-4">
         <ul class="principal">
@@ -13,7 +13,7 @@
       </div>
       <div class="col-4"></div>
     </div>
-    <div class="row">
+    <div class="row nomargin" v-if="showStats">
       <div class="col-4"><CardContainer :type="'negative'" /></div>
       <div class="col-4"><CardContainer :type="'neutral'" /></div>
       <div class="col-4"><CardContainer :type="'positive'" /></div>
@@ -71,7 +71,7 @@ export default defineComponent({
       showStats.value = true;
     }
 
-    watch(theme, newValue => {
+    watch(theme, (newValue) => {
       if (newValue == "dark") {
         document.body.classList.remove("light");
         document.body.classList.add("dark");
@@ -95,8 +95,14 @@ export default defineComponent({
       scores,
       keyPress,
       changeTheme,
-      searched
+      searched,
     };
-  }
+  },
 });
 </script>
+
+<style>
+.nomargin {
+  margin-right: 0 !important;
+}
+</style>

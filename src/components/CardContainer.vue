@@ -54,9 +54,9 @@ span {
   font-family: "Open Sans", serif;
 }
 
-.container-card {
+/*.container-card {
   margin-top: 12.5rem;
-}
+}*/
 
 .container-header {
   width: 90%;
@@ -78,13 +78,13 @@ span {
   border-top-right-radius: 0.5rem;
   position: relative;
   &.negative {
-    background-color: #db3450;
+    background-color: $colorNegative;
   }
   &.neutral {
-    background-color: #3498db;
+    background-color: $colorNeutral;
   }
   &.positive {
-    background-color: #34db87;
+    background-color: $colorPositive;
   }
 }
 
