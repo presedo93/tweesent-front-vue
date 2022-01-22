@@ -7,8 +7,8 @@ import "bootstrap";
 import "@fortawesome/fontawesome-free/css/all.min.css"
 
 const app = createApp(App)
-  .use(store)
-  .use(router)
+.use(store)
+.use(router)
 
 app.component("bootstrap");
 

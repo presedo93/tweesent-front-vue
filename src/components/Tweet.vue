@@ -3,18 +3,18 @@
     <div class="card-body">
       <div class="row">
         <div class="col-2 text-sm-start">
-          <img class="avator" :src="props.tweet.img" />
+          <img class="avator" :src="props.tweet.image" />
         </div>
         <div class="col text-sm-start name-user">
-          <h6 class="user">{{ props.tweet.user }}</h6>
-          <p class="name">@{{ props.tweet.name}}</p>
+          <h6 class="user">{{ props.tweet.name }}</h6>
+          <p class="name">@{{ props.tweet.username }}</p>
         </div>
         <div class="col text-sm-end">
           <i class="fab fa-twitter"></i>
         </div>
       </div>
       <div class="card-text text-sm-start">{{ props.tweet.text }}</div>
-      <div class="text-sm-start created">{{ props.tweet.created }}</div>
+      <div class="text-sm-start created">{{ props.tweet.created_at }}</div>
       <hr />
       <div class="row icons">
         <div class="col-md-3 text-sm-start">

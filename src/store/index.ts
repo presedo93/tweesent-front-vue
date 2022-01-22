@@ -2,15 +2,14 @@ import { createStore } from "vuex";
 
 export interface TweetData {
   id: string;
-  created: string;
+  created_at: string;
+  username: string;
   name: string;
-  user: string;
-  img: string;
+  image: string;
   likes: string;
   retweets: string;
   text: string;
   sentiment: string;
-  confidence: string;
 }
 
 export default createStore({

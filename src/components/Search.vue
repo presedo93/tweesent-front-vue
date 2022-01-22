@@ -26,14 +26,19 @@ export default defineComponent({
     }
 
     function search(event: any) {
-      const path = "http://127.0.0.1:5000/gettweet?count=10";
+      const path = "http://127.0.0.1:8000/search_tweets";
       const tweets: TweetData[] = [];
       const score: Scores = new Scores();
 
       store.commit("changeLoading");
 
       axios
-        .post(path, { text: event.target.value })
+        .post(path, {
+          query: event.target.value,
+          max_results: 10,
+          allow_retweets: false,
+          allow_replies: false
+        })
         .then((answer: AxiosResponse) => {
           const tweetsResponse = answer.data.tweets;
           const len = tweetsResponse.length;
