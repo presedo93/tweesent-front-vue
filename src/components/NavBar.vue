@@ -5,9 +5,7 @@
         ><span class="icon-logo"></span
       ></a>
     </div>
-    <Popper arrow content="This is the Popper content 🍿" style="margin-right: 2%">
-      <i class="fas fa-cog"></i>
-    </Popper>
+    <comm-config :theme="themeNavBar" />
     <div class="theme" @click="changeTheme">
       <i :class="themeIcon"></i>
     </div>
@@ -17,11 +15,11 @@
 <script lang="ts">
 import store from "@/store";
 import { defineComponent, computed } from "vue";
-import Popper from "vue3-popper";
+import CommConfig from "@/components/CommConfig.vue";
 
 export default defineComponent({
   components: {
-      Popper,
+      CommConfig,
     },
   setup() {
     const theme = computed(function () {
@@ -73,19 +71,7 @@ export default defineComponent({
   background-color: #a7a8aa !important;
 }
 
-:deep(.popper) {
-    background: #919191;
-    padding: 20px;
-    border-radius: 10px;
-    color: #fff;
-  }
-
-  :deep(.popper #arrow::before) {
-    background: #919191;
-  }
-
-  :deep(.popper:hover),
-  :deep(.popper:hover > #arrow::before) {
-    background: #919191;
-  }
+.bg-dark {
+  background-color: #343a40 !important;
+}
 </style>
