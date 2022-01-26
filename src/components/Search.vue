@@ -35,9 +35,10 @@ export default defineComponent({
       axios
         .post(path, {
           query: event.target.value,
-          max_results: 10,
-          allow_retweets: false,
-          allow_replies: false
+          max_results: store.getters.params.num_tweets,
+          allow_retweets: store.getters.params.retweets,
+          allow_replies: store.getters.params.replies,
+          token: store.getters.params.token,
         })
         .then((answer: AxiosResponse) => {
           const tweetsResponse = answer.data.tweets;

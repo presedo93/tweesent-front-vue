@@ -12,15 +12,28 @@ export interface TweetData {
   sentiment: string;
 }
 
+export interface CommParams {
+  live: boolean;
+  // HTTP params
+  num_tweets: number;
+  retweets: boolean;
+  replies: boolean;
+  token?: string;
+  // WebSockets params
+  interval: number;
+}
+
 export default createStore({
   state: {
     theme: "dark",
     tweets: [] as TweetData[],
+    params: { live: false, num_tweets: 10, retweets: false, replies: false, token: undefined, interval: 1 } as CommParams,
     showLoading: false
   },
   getters: {
     theme: state => state.theme,
     tweets: state => state.tweets,
+    params: state => state.params,
     showLoading: state => state.showLoading
   },
   mutations: {
@@ -30,6 +43,9 @@ export default createStore({
       } else {
         state.theme = "dark";
       }
+    },
+    changeComm(state) {
+      state.params.live = !state.params.live;
     },
     addTweet(state, newTweets: TweetData) {
       const a = newTweets as TweetData;

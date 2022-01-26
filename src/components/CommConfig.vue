@@ -3,7 +3,7 @@
         <i class="fas fa-cog"></i>
         <template #content>
             <div class="row">
-                <div class="col" v-if="!live">
+                <div class="col" v-if="!$store.getters.params.live">
                     <button
                         type="button"
                         class="btn btn-success btn-sm"
@@ -19,13 +19,13 @@
                 </div>
             </div>
             <br />
-            <div class="row" v-if="!live">
+            <div class="row" v-if="!$store.getters.params.live">
                 <div class="row">
                     <div class="col">
                         <label class="form-label">Num tweets</label>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" />
+                        <input type="text" class="form-control" v-model=$store.getters.params.num_tweets />
                     </div>
                 </div>
                 <div class="row form-switch options">
@@ -33,7 +33,7 @@
                         <label class="form-label">Retweets</label>
                     </div>
                     <div class="col">
-                        <input class="form-check-input" type="checkbox" />
+                        <input class="form-check-input" type="checkbox" v-model=$store.getters.params.retweets />
                     </div>
                 </div>
                 <div class="row form-switch options">
@@ -41,7 +41,7 @@
                         <label class="form-label">Replies</label>
                     </div>
                     <div class="col">
-                        <input class="form-check-input" type="checkbox" />
+                        <input class="form-check-input" type="checkbox" v-model=$store.getters.params.replies />
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                         <label class="form-label">Interval (s)</label>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" />
+                        <input type="text" class="form-control" v-model=$store.getters.params.interval />
                     </div>
                 </div>
             </div>
@@ -60,8 +60,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import Popper from "vue3-popper";
+import store from "@/store";
 
 export default defineComponent({
     components: {
@@ -71,11 +72,10 @@ export default defineComponent({
         theme: String,
     },
     setup(props) {
-        const live = ref<boolean>(false);
         function changeComm() {
-            live.value = !live.value;
+            store.commit("changeComm");
         }
-        return { props, live, changeComm }
+        return { props, changeComm }
     }
 });
 </script>
