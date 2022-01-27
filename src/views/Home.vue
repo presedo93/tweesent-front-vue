@@ -43,7 +43,7 @@ export default defineComponent({
   setup() {
     const inputSearch = ref<string>("");
     const showStats = ref<boolean>(false);
-    const tweets = ref<TweetData[]>();
+    const tweets = ref<TweetData[]>([]);
     const scores = ref<Scores>();
 
     const theme = computed(function () {
@@ -65,8 +65,8 @@ export default defineComponent({
       }
     }
 
-    function searched(newTweets: TweetData[], newScores: Scores) {
-      tweets.value = newTweets;
+    function searched(tweet: TweetData, newScores: Scores) {
+      tweets.value.push(tweet);
       scores.value = newScores;
       showStats.value = true;
     }

@@ -1,22 +1,20 @@
 <template>
   <div class="search-box" :class="theme">
-    <input
-      type="text"
-      placeholder=" "
-      :class="theme"
-      v-on:keyup.enter="search"
-    /><span v-on:click="remove" :class="theme"></span>
+    <input type="text" placeholder=" " :class="theme" v-on:keyup.enter="search" />
+    <span v-on:click="remove" :class="theme"></span>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { onUnmounted, defineComponent, computed, watch, } from "vue";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { Scores } from "@/components/Stats.vue";
-import store, { TweetData } from "@/store";
+import store from "@/store";
 
 export default defineComponent({
-  setup(prop, context) {
+  setup(_, context) {
+    let websocket: any | WebSocket = null;
+
     const theme = computed(function () {
       return store.getters.theme;
     });
@@ -25,9 +23,40 @@ export default defineComponent({
       event.target.previousElementSibling.value = "";
     }
 
-    function search(event: any) {
+    /**
+     * Callback method every time new data is received from the backend's websocket.
+     * @param event keyup enter event that will contain the query to search.
+     */
+    function onMessage(event: MessageEvent): any {
+      const tweet: any = JSON.parse(event.data);
+      if (tweet != undefined && "text" in tweet) {
+        context.emit("search", tweet, new Scores());
+      }
+    }
+
+    /**
+     * WebSocket starting method. It returns the ws object so it can be closed later on.
+     * @param event keyup enter event that will contain the query to search.
+     */
+    function webSearch(event: any): WebSocket {
+      const path = "ws://127.0.0.1:8000/stream/" + store.getters.params.interval + "/" + event.target.value;
+      const ws = new WebSocket(path);
+      ws.onmessage = onMessage;
+      return ws;
+    }
+
+    watch(() => store.getters.params.live, function() {
+      if (!store.getters.params.live) {
+        websocket.close();
+      }
+    });
+
+    /**
+     * HTTP Requests method to communicate with the backend.
+     * @param event keyup enter event that will contain the query to search.
+     */
+    function httpSearch(event: any) {
       const path = "http://127.0.0.1:8000/search_tweets";
-      const tweets: TweetData[] = [];
       const score: Scores = new Scores();
 
       store.commit("changeLoading");
@@ -41,26 +70,41 @@ export default defineComponent({
           token: store.getters.params.token,
         })
         .then((answer: AxiosResponse) => {
-          const tweetsResponse = answer.data.tweets;
-          const len = tweetsResponse.length;
+          const tweets = answer.data.tweets;
+          const len = tweets.length;
           for (let i = 0; i < len; i++) {
-            tweets.push(tweetsResponse[i]);
-            if (tweetsResponse[i].sentiment === "negative") {
+            // tweets.push([i]);
+            if (tweets[i].sentiment === "negative") {
               score.negatives += 1;
-            } else if (tweetsResponse[i].sentiment === "neutral") {
+            } else if (tweets[i].sentiment === "neutral") {
               score.neutrals += 1;
             } else {
               score.positives += 1;
             }
+            context.emit("search", tweets[i], score);
           }
-          score.perc(len);
-          context.emit("search", tweets, score);
+          // score.perc(len);
+          // context.emit("search", tweets, score);
           store.commit("changeLoading");
         })
         .catch((error: AxiosError) => {
           console.log("ERROR::", error);
         });
     }
+
+    function search(event: any) {
+      if (store.getters.params.live) {
+        websocket = webSearch(event);
+      } else {
+        httpSearch(event);
+      }
+    }
+
+    onUnmounted(() => {
+      if (store.getters.params.live && websocket != null) {
+        websocket.close();
+      }
+    });
 
     return {
       remove,

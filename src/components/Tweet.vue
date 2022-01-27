@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="card-text text-sm-start">{{ props.tweet.text }}</div>
-      <div class="text-sm-start created">{{ props.tweet.created_at }}</div>
+      <div class="text-sm-start created">{{ date }}</div>
       <hr />
       <div class="row icons">
         <div class="col-md-3 text-sm-start">
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, PropType } from "vue";
+import { defineComponent, ref, computed, onMounted, PropType } from "vue";
 import gsap from "gsap";
 import store, { TweetData } from "@/store";
 
@@ -58,7 +58,6 @@ export default defineComponent({
       default: false
     }
   },
-
   setup(props) {
     const url = ref<string>(
       "https://twitter.com/" + props.tweet.name + "/status/" + props.tweet.id
@@ -73,10 +72,14 @@ export default defineComponent({
       };
     }
 
+    const date = computed(function () {
+      const date = props.tweet.created_at.split("+")[0];
+      const split = date.split("T");
+      return split[0] + " " + split[1];
+    });
+
     function animationCard(el: any) {
-
       // Calculate the difference (dynamically)
-
       const pointNegative = document.getElementsByClassName("container-header negative")[0] as HTMLElement;
       const pointPositive = document.getElementsByClassName("container-header positive")[0] as HTMLElement;
       const pointNeutral = document.getElementsByClassName("container-header neutral")[0] as HTMLElement;
@@ -119,6 +122,7 @@ export default defineComponent({
     return {
       props,
       url,
+      date,
     };
   },
 });
@@ -190,7 +194,7 @@ hr {
 }
 
 .created {
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   color: #a5aeb3;
 }
 
